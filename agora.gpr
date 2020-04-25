@@ -1,0 +1,14 @@
+project Agora is
+   for Languages    use ("Ada");
+   for Source_Dirs  use ("source");
+   for Object_Dir   use  "objects";
+   for Exec_Dir     use ".";
+   for Source_Files use ("agora.adb", "objects.adb", "objects.adb", "locations.ads", "locations.adb", "agora_types.ads");
+   for Main         use ("agora.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnatwa", "-g", "-gnat2012", "-gnato");
+   end Compiler;
+
+
+end Agora;
