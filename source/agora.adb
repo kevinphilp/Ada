@@ -6,7 +6,7 @@ with Objects;
 with Locations;
 with Agora_Types; use Agora_Types;
 
--- test gfor github
+-- test gfor github and some extra
 
 procedure Agora is
    
