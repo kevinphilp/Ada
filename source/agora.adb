@@ -6,14 +6,16 @@ with Objects;
 with Locations;
 with Agora_Types; use Agora_Types;
 
--- test gfor github and some extra
-
 procedure Agora is
    
-   type Noun is (Nothing, Note, Lantern, Rope, Torch);
+   type All_Nouns is (North, South, East, West, Up, Down, Nothing, Note, Lantern, Rope, Torch);
+   subtype Direction is All_Nouns range North .. Down;
+   subtype Noun is All_Nouns range Nothing .. All_Nouns'Last;
+
    type Verb is (Nothing, Quit, Go, Drop, Get, Read, Look, Inspect);   
-   type A_Nouns is array (Noun'Range) of Objects.Object;   
-   A_Objects : A_Nouns;
+   
+   type Noun_Array is array (Noun'Succ(Nothing) .. Noun'Last) of Objects.Object;   
+   A_Objects : Noun_Array;
    
    type Enum_Location is (Porch, Hall, Cellar, Kitchen);
    type T_Array_Location is array (Enum_Location'Range) of Locations.Location;
@@ -21,7 +23,7 @@ procedure Agora is
    
 begin
    
-   for I in A_Nouns'Range loop
+   for I in Noun_Array'Range loop
       A_Objects(I).Name := Name_BString.To_Bounded_String("Object name not set");
       A_Objects(I).Description := Description_BString.To_Bounded_String("Object desc not set");
       A_Objects(I).UID := 1;
@@ -37,7 +39,7 @@ begin
    A_Objects(Lantern).UID := 2;
    A_Objects(Lantern).Activate := Objects.Utilise'Access;
       
-   for I in A_Nouns'Range loop
+   for I in All_Nouns'Range loop
       Put_Line( Name_BString.To_String(A_Objects(I).Name) );
       A_Objects(I).Activate( A_Objects(I) );
    end loop;
@@ -55,7 +57,7 @@ begin
 
    for I in A_Locations'Range loop
       Put_Line( Name_BString.To_String(A_Locations(I).Name) );
-      A_locations(I).On_Enter( A_Locations(I) );
+      A_Locations(I).On_Enter( A_Locations(I) );
    end loop;
    
    
@@ -72,8 +74,8 @@ begin
       Found_Subject : Boolean := False;
       
       type T_Sentence is record
-	 Subject : Noun;
-	 Object : Noun;
+	 Subject : All_Nouns;
+	 Object : All_Nouns;
 	 Action : Verb;
       end record;
 	  
@@ -103,7 +105,8 @@ begin
 	       First   => F,
 	       Last    => L);			
 	    
-	    for J in Noun loop
+		
+	    for J in All_Nouns loop
 	       if To_Lower(J'Image) = To_String(BS)(F .. L) then
 		  if Found_Subject = False then
 		     Sentence.Subject := J;
@@ -119,8 +122,7 @@ begin
 		  Sentence.Action := K;
 	       end if;
 	    end loop;	
-	    
-	    exit when L = 0;
+		
 	    
 	    I := L + 1;
 	 end loop;  -- I in strings
