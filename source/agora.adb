@@ -27,6 +27,7 @@ begin
       A_Objects(I).Name := Name_BString.To_Bounded_String("Object name not set");
       A_Objects(I).Description := Description_BString.To_Bounded_String("Object desc not set");
       A_Objects(I).UID := 1;
+      A_Objects(I).State := Objects.Normal;
       A_Objects(I).Activate := Objects.Default'Access;
    end loop;
   
@@ -39,14 +40,12 @@ begin
    A_Objects(Lantern).UID := 2;
    A_Objects(Lantern).Activate := Objects.Utilise'Access;
       
-   for I in All_Nouns'Range loop
+   for I in Noun_Array'Range loop
       Put_Line( Name_BString.To_String(A_Objects(I).Name) );
       A_Objects(I).Activate( A_Objects(I) );
    end loop;
    
-   
-   
-   
+     
    for I in A_Locations'Range loop
       A_Locations(I).Name := Name_BString.To_Bounded_String("Location name not set");
       A_Locations(I).Description := Description_BString.To_Bounded_String("Location desc not set");
